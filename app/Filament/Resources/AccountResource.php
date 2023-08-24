@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountResource\Pages;
+use App\Filament\Resources\AccountResource\RelationManagers\CardRelationManager;
 use App\Models\Mysql\Account;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,13 +24,15 @@ class AccountResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nome')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('bank_name')
+                    ->label('Nome do Banco')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Hidden::make('user_id')
-                    ->default(fn () => auth()->user()->id),
+                    ->default(fn() => auth()->user()->id),
             ]);
     }
 
@@ -38,9 +41,13 @@ class AccountResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nome')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('bank_name')
+                    ->label('Nome do Banco'),
                 Tables\Columns\TextColumn::make('balance')
+                    ->label('Saldo')
                     ->sortable(),
             ])
             ->filters([
@@ -62,7 +69,7 @@ class AccountResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CardRelationManager::class
         ];
     }
 
