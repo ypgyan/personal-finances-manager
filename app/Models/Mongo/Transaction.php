@@ -9,4 +9,5 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    protected $connection = 'mongodb';
 }
