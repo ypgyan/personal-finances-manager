@@ -28,6 +28,12 @@ class TransactionResource extends Resource
                 TextInput::make('name')
                     ->label('Nome')
                     ->required(),
+                TextInput::make('amount')
+                    ->label('Valor')
+                    ->prefix('R$')
+                    ->required()
+                    ->inputMode('decimal')
+                    ->maxValue(42949672.95),
                 TextInput::make('description')
                     ->label('Descrição')
                     ->required(),
