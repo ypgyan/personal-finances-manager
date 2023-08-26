@@ -57,7 +57,14 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nome')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount')
+                    ->label('Valor')
+                    ->money('BRL')
+                    ->sortable(),
             ])
             ->filters([
                 //
