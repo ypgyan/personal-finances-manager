@@ -13,6 +13,8 @@ class Card extends Model
 {
     use HasFactory;
 
+    protected $connection = 'mysql';
+
     protected function getBalanceAttribute()
     {
         return $this->transactions->sum('amount');
