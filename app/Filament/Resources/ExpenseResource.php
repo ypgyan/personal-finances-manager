@@ -4,7 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ExpenseResource\Pages;
 use App\Models\Mongo\Expense;
+use App\Models\Mysql\Category;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -22,8 +25,28 @@ class ExpenseResource extends Resource
     {
         return $form
             ->schema([
-                //
-            ]);
+                TextInput::make('name')
+                    ->label('Nome')
+                    ->required(),
+                TextInput::make('amount')
+                    ->label('Valor')
+                    ->prefix('R$')
+                    ->required()
+                    ->inputMode('decimal')
+                    ->maxValue(42949672.95),
+                TextInput::make('description')
+                    ->label('Descrição')
+                    ->required(),
+                Select::make('category_id')
+                    ->label('Categoria')
+                    ->placeholder('Selecione uma categoria')
+                    ->options(Category::where('reference', 'expense')->get()->pluck('name', 'id'))
+                    ->searchable(),
+                Forms\Components\Hidden::make('user_id')
+                    ->default(fn() => auth()->user()->id),
+                Forms\Components\Hidden::make('type')
+                    ->default('expense'),
+            ])->columns(2);
     }
 
     public static function table(Table $table): Table
