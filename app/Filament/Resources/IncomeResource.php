@@ -4,7 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\IncomeResource\Pages;
 use App\Models\Mongo\Income;
+use App\Models\Mysql\Account;
+use App\Models\Mysql\Card;
+use App\Models\Mysql\Category;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -22,7 +27,32 @@ class IncomeResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->label('Nome')
+                    ->required(),
+                TextInput::make('amount')
+                    ->label('Valor')
+                    ->prefix('R$')
+                    ->required()
+                    ->inputMode('decimal')
+                    ->maxValue(42949672.95),
+                TextInput::make('description')
+                    ->label('Descrição')
+                    ->required(),
+                Select::make('category_id')
+                    ->label('Categoria')
+                    ->placeholder('Selecione uma categoria')
+                    ->options(Category::where('reference', 'income')->get()->pluck('name', 'id'))
+                    ->searchable(),
+                Select::make('account_id')
+                    ->label('Conta')
+                    ->placeholder('Selecione uma conta')
+                    ->options(Account::all()->pluck('name', 'id'))
+                    ->searchable(),
+                Forms\Components\Hidden::make('user_id')
+                    ->default(fn() => auth()->user()->id),
+                Forms\Components\Hidden::make('type')
+                    ->default('expense'),
             ]);
     }
 
@@ -30,7 +60,18 @@ class IncomeResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nome')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount')
+                    ->label('Valor')
+                    ->money('BRL')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('account.name')
+                    ->label('Conta'),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Categoria'),
             ])
             ->filters([
                 //

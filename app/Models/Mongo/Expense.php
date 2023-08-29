@@ -3,6 +3,7 @@
 namespace App\Models\Mongo;
 
 use App\Models\Mysql\Account;
+use App\Models\Mysql\Card;
 use App\Models\Mysql\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,5 +29,10 @@ class Expense extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function Card(): BelongsTo
+    {
+        return $this->belongsTo(Card::class);
     }
 }
