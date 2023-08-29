@@ -21,8 +21,6 @@ services:
             - '.:/var/www/html'
         networks:
             - sail
-        depends_on:
-            - mysql
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -35,7 +33,7 @@ services:
             MYSQL_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
-            - 'sail-mysql:/var/lib/mysql'
+            - 'sail-mysql-pfm:/var/lib/mysql'
             - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
@@ -51,7 +49,6 @@ services:
         image: 'mongo:4.4'
         ports:
             - '5555:27017'
-        restart: always
         environment:
             MONGO_INITDB_ROOT_USERNAME: 'laravel'
             MONGO_INITDB_ROOT_PASSWORD: 'laravel'
@@ -64,7 +61,7 @@ networks:
     sail:
         driver: bridge
 volumes:
-    sail-mysql:
+    sail-mysql-pfm:
         driver: local
     sail-mongo:
         driver: local
