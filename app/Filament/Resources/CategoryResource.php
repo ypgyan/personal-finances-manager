@@ -30,6 +30,12 @@ class CategoryResource extends Resource
                     ->label('Descrição')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('reference')
+                    ->label('Tipo de entrada')
+                    ->options([
+                        'expense' => 'Despesas',
+                        'income' => 'Entradas',
+                    ]),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => auth()->user()->id),
             ]);
