@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->index('user_id');
+            $table->unsignedBigInteger('account_id');
+            $table->index('account_id');
             $table->string('name');
             $table->integer('limit')->default(0);
             $table->timestamps();

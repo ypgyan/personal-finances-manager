@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
+        Schema::connection('mongodb')->create('expenses', function (Blueprint $table) {
             $table->index('user_id');
-            $table->string('name');
-            $table->string('bank_name')->nullable();
-            $table->string('bank_code')->nullable();
+            $table->index('account_id');
+            $table->index('category_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::connection('mongodb')->dropIfExists('expenses');
     }
 };

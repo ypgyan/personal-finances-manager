@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::connection('mongodb')->create('transactions', function (Blueprint $table) {
             $table->index('user_id');
+            $table->index('account_id');
             $table->timestamps();
         });
     }

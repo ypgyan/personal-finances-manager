@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->index('user_id');
-            $table->string('name');
-            $table->string('bank_name')->nullable();
-            $table->string('bank_code')->nullable();
-            $table->timestamps();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->enum('reference', ['income', 'expense'])->default('expense')->after('name');
         });
     }
 
@@ -31,6 +25,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropColumn(['reference']);
+        });
     }
 };
